@@ -1,118 +1,250 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Link,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+import {  doc, getDoc } from "firebase/firestore";
+import { db } from "@/Firebase/Connexion";
 
-export default function Home() {
+import { useRouter } from "next/router";
+
+
+const Connexion = () => {
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
+
+  const [userD, setUserD] = useState();
+  
+  const [email, setEmail] = useState();
+  const [pass, setPass] = useState();
+  const toast = useToast();
+  const router = useRouter()
+
+
+
+
+ 
+
+
+
+
+
+
+  const Login = async () => {
+    // const q = query(collection(db, "Admin/"), where("email", "==", email));
+
+    // const querySnapshot = await getDocs(q);
+
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+      // if (doc.data().password == pass) {
+      //   console.log(doc.data().password);
+      //   localStorage.setItem("user",JSON.stringify(doc.data()));
+      //   router.reload()
+      // }
+    // });
+    const docRef = doc(db, "Livreur/" + email);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      
+      if (docSnap.data().password == pass ) {
+       
+        localStorage.setItem("user",JSON.stringify(docSnap.data().email));
+        localStorage.setItem("cat",JSON.stringify(docSnap.data().categorie))
+        localStorage.setItem("org",JSON.stringify(docSnap.data().organisation))
+        localStorage.setItem("name",JSON.stringify(docSnap.data().name))
+        router.reload()
+        
+          toast({
+            title: "ACCES APPROUVÉ",
+            description: "NOUS VOUS REDIRIGEONS",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          })
+      
+      }else{
+        toast({
+          title: "VERIFIER VOS INFORMATIONS",
+          description: "Erreur dans l'un des champs",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+        })
+      }
+    } else {
+      toast({
+        title: "VERIFIER VOS INFORMATIONS",
+        description: "Erreur dans l'un des champs",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      })
+    }
+  };
+  if (typeof window !== "undefined") {
+    const exist =  localStorage.getItem("user");
+    if (exist) {
+       console.log(exist.toString())
+       router.push("/Dashboard")
+    }
+    
+   }
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      {/* le main  */}
+      <Center width={"100%"} height={"100vh"}>
+        {/* la premier box grise  */}
+        <Flex
+          width={{ base: "90%", md: "70%", xl: "50%", "2xl": "40%" }}
+          height={{
+            base: "90vh",
+            md: "90vh",
+            lg: "70vh",
+            xl: "65vh",
+            "2xl": "70vh",
+          }}
+          bg={"#dee2e6"}
+          borderRadius={"2em"}
+          direction={"column"}
+        >
+          {/* premiere ligne  */}
+          <Stack
+            w={"100%"}
+            h={"4em"}
+            direction={"row"}
+            mt={"1em"}
+            alignItems={"center"}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <Box ml={"1em"}  h={'5em'} w={'8em'} >
+             <Image src="/logo1.png" alt={'logo de chap'}/>
+            </Box>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+            <Center w={"full"}>
+              <Text color={"#0077b6"} fontWeight={"bold"} fontSize={"2em"}>
+                PAGE DE CONNEXION
+              </Text>
+            </Center>
+          </Stack>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          {/* les deux inputs  */}
+          <Flex
+            w={"100%"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+          >
+            {/* input email */}
+            <Stack direction={"column"} w={{ base: "90%" }} mt={"2em"}>
+              <Text fontWeight={"bold"} fontSize={"1.5em"}>
+                E-mail
+              </Text>
+              <Input
+                w={"100%"}
+                h={"4em"}
+                bg={"#fff"}
+                borderRadius={"full"}
+                placeholder="votre e-mail"
+                _placeholder={{ color: "#000" }}
+                onChange={(e) => setEmail(e.target.value)}
+                isRequired
+              ></Input>
+            </Stack>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+            {/* input mot de pass */}
+            <Stack direction={"column"} w={{ base: "90%" }} mt={"2em"}>
+              <Text fontWeight={"bold"} fontSize={"1.5em"}>
+                Mot de Passe
+              </Text>
+              <InputGroup>
+                <Input
+                  w={"100%"}
+                  h={"4em"}
+                  bg={"#fff"}
+                  borderRadius={"full"}
+                  placeholder="mot de passe"
+                  _placeholder={{ color: "#000" }}
+                  type={show ? "text" : "password"}
+                  onChange={(e) => setPass(e.target.value)}
+                  _valid={{ border: "1px solid red" }}
+                  isRequired
+                ></Input>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="1.75rem"
+                    w={"fit-content"}
+                    size="sm"
+                    mt={5}
+                    mr={5}
+                    onClick={handleClick}
+                  >
+                    {show ? "Afficher" : "Masquer"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </Stack>
+          </Flex>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+          <Center
+            mt={"2em"}
+            w={"100%"}
+            h={{ base: "3em" }}
+            _hover={{ textDecoration: "none" }}
+          >
+            <Link
+              w={"50%"}
+              h={{ base: "3em" }}
+              _hover={{ textDecoration: "none" }}
+            >
+              <Button
+                w={"full"}
+                h={"full"}
+                colorScheme="blue"
+                borderRadius={"full"}
+                fontSize={"1.5em"}
+                onClick={() => Login()}
+              >
+                Connexion
+              </Button>
+            </Link>
+          </Center>
+
+          <Link
+            color={"#0077b6"}
+            textAlign={"center"}
+            fontWeight={"bold"}
+            mt={"1em"}
+            _hover={{ textDecoration: "none" }}
+          >
+            Mot de passe oublié ?
+          </Link>
+          <Link
+            color={"#0077b6"}
+            textAlign={"center"}
+            href="/inscription"
+            fontWeight={"bold"}
+            mt={"1em"}
+            _hover={{ textDecoration: "none" }}
+          >
+           S'Inscrire
+          </Link>
+        </Flex>
+      </Center>
+    </>
+  );
+};
+
+export default Connexion;
