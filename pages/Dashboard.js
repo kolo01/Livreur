@@ -172,7 +172,7 @@ export default function Daschboard() {
     } else {
       router.push("/");
     }
-  });
+  },[setData,router]);
   const logout = () => {
     localStorage.clear("user");
   };
