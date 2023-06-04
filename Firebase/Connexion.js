@@ -9,14 +9,16 @@ import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDCXPzfelq9NtWtNbacLWK_nGGKv4-7ixM",
-  authDomain: "appchap-19048.firebaseapp.com",
-  projectId: "appchap-19048",
-  storageBucket: "appchap-19048.appspot.com",
-  messagingSenderId: "528359312608",
-  appId: "1:528359312608:web:7f3daad3e8725404da9485",
-  measurementId: "G-5LPXH3YNN4"
+  apiKey: "AIzaSyC_HoYUjryM6eEB0x5Rs9sn-AU70YfqU4M",
+  authDomain: "emarket-a6858.firebaseapp.com",
+  databaseURL: "https://emarket-a6858-default-rtdb.firebaseio.com",
+  projectId: "emarket-a6858",
+  storageBucket: "emarket-a6858.appspot.com",
+  messagingSenderId: "1083209775253",
+  appId: "1:1083209775253:web:3629b15e8f79a7e2dc439c",
+  measurementId: "G-HNGF5RBC9T"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
