@@ -188,7 +188,7 @@ export default function Daschboard() {
         <Image src="logo1.png" alt={"logo de chap"} h={"4em"} />
         <Box display={"flex"}>
           <Avatar name="kolo" />
-          <Text mt={2}>EMAIL</Text>
+          <Text mt={2}>{email}</Text>
         </Box>
       </SimpleGrid>
       <Tabs isFitted variant="enclosed">
