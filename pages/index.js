@@ -30,6 +30,7 @@ const Connexion = () => {
   const [pass, setPass] = useState();
   const toast = useToast();
   const router = useRouter()
+  const inscrire = " S'Inscrire"
 
 
 
@@ -102,6 +103,7 @@ const Connexion = () => {
     }
     
    }
+
   return (
     <>
       {/* le main  */}
@@ -239,7 +241,7 @@ const Connexion = () => {
             mt={"1em"}
             _hover={{ textDecoration: "none" }}
           >
-           S'Inscrire
+          {inscrire}
           </Link>
         </Flex>
       </Center>
